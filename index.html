@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terra Relics™ | Authentic Pre‑Collapse Organic Matter | Series B</title>
   <meta name="description" content="The world's first narrative-native organic matter platform. Backed by visionaries. Trusted by collectors. Questioned by everyone else." />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -172,7 +173,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 140px 48px 80px;
+      padding: 180px 48px 80px;
       position: relative;
     }
 
@@ -1275,6 +1276,596 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Stock Ticker */
+    .stock-ticker {
+      position: fixed;
+      top: 73px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      background: linear-gradient(90deg, var(--bg-secondary) 0%, var(--bg-tertiary) 50%, var(--bg-secondary) 100%);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 10px 0;
+      overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex;
+      animation: tickerScroll 30s linear infinite;
+      width: max-content;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 32px;
+      white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    .ticker-symbol {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .ticker-value {
+      color: var(--text-secondary);
+    }
+
+    .ticker-change {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .ticker-change.up {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-emerald);
+    }
+
+    .ticker-change.down {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .ticker-alert {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--accent-amber);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      animation: alertPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes alertPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .ticker-divider {
+      color: var(--glass-border);
+      padding: 0 16px;
+    }
+
+    /* 3D Viewer Section */
+    .viewer-section {
+      padding: 120px 48px;
+      background: var(--bg-secondary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .viewer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .viewer-content h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      margin-bottom: 24px;
+    }
+
+    .viewer-content p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      margin-bottom: 32px;
+    }
+
+    .viewer-features {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .viewer-feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+    }
+
+    .viewer-feature-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dim) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .viewer-feature-text {
+      flex: 1;
+    }
+
+    .viewer-feature-title {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .viewer-feature-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .viewer-canvas-container {
+      position: relative;
+      aspect-ratio: 1;
+      background: radial-gradient(ellipse at center, rgba(212,168,83,0.05) 0%, transparent 70%);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      overflow: hidden;
+    }
+
+    #viewer-canvas {
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    #viewer-canvas:active {
+      cursor: grabbing;
+    }
+
+    .viewer-controls {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+    }
+
+    .viewer-control-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--glass-bg);
+      border-radius: 8px;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+    }
+
+    .viewer-control-btn:hover {
+      background: var(--glass-highlight);
+    }
+
+    .viewer-control-btn.active {
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+    }
+
+    .viewer-stats {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .viewer-stat-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 4px;
+    }
+
+    .viewer-stat-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .viewer-stat-label {
+      color: var(--text-muted);
+    }
+
+    .viewer-stat-value {
+      color: var(--accent-emerald);
+    }
+
+    /* Lore Generator Section */
+    .lore-section {
+      padding: 120px 48px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .lore-header h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      margin-bottom: 16px;
+    }
+
+    .lore-header p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      margin-bottom: 48px;
+    }
+
+    .lore-generator {
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lore-generator::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at top, rgba(212,168,83,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .lore-output {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      line-height: 1.6;
+      font-style: italic;
+      color: var(--text-primary);
+      margin-bottom: 32px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .lore-output .quote-mark {
+      position: absolute;
+      font-size: 120px;
+      color: var(--glass-border);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .lore-output .quote-mark.open {
+      top: -20px;
+      left: 0;
+    }
+
+    .lore-output .quote-mark.close {
+      bottom: -60px;
+      right: 0;
+    }
+
+    .lore-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .lore-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lore-meta-value {
+      color: var(--accent-gold);
+    }
+
+    .lore-generate-btn {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dim) 100%);
+      color: var(--bg-primary);
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lore-generate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(212,168,83,0.3);
+    }
+
+    .lore-generate-btn:active {
+      transform: translateY(0);
+    }
+
+    .lore-generate-btn.generating {
+      pointer-events: none;
+    }
+
+    .lore-generate-btn.generating::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 1s infinite;
+    }
+
+    @keyframes shimmer {
+      100% { left: 100%; }
+    }
+
+    .lore-rarity {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .rarity-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .rarity-badge.common {
+      background: rgba(161, 161, 170, 0.15);
+      color: var(--text-secondary);
+    }
+
+    .rarity-badge.uncommon {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-emerald);
+    }
+
+    .rarity-badge.rare {
+      background: rgba(59, 130, 246, 0.15);
+      color: #3b82f6;
+    }
+
+    .rarity-badge.legendary {
+      background: rgba(212, 168, 83, 0.15);
+      color: var(--accent-gold);
+    }
+
+    .rarity-badge.mythic {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+      color: #a855f7;
+    }
+
+    /* Commune Canvas Section */
+    .commune-section {
+      padding: 120px 48px;
+      background: var(--bg-secondary);
+    }
+
+    .commune-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .commune-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .commune-header h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      margin-bottom: 16px;
+    }
+
+    .commune-header p {
+      color: var(--text-secondary);
+      font-size: 18px;
+    }
+
+    .commune-container {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 32px;
+    }
+
+    .commune-canvas-wrapper {
+      position: relative;
+      aspect-ratio: 16/10;
+      background: var(--bg-primary);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    #commune-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .commune-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0.5;
+      transition: opacity 0.5s;
+    }
+
+    .commune-canvas-wrapper:hover .commune-overlay {
+      opacity: 0;
+    }
+
+    .commune-overlay-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .commune-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .commune-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .commune-card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .commune-reading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--accent-emerald);
+      margin-bottom: 4px;
+    }
+
+    .commune-reading-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .commune-signature {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-gold);
+      word-break: break-all;
+      line-height: 1.6;
+    }
+
+    .commune-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .commune-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .commune-btn.primary {
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+    }
+
+    .commune-btn.secondary {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+    }
+
+    .commune-spectrum {
+      height: 8px;
+      background: linear-gradient(90deg,
+        #ef4444 0%,
+        #f97316 20%,
+        #eab308 40%,
+        #22c55e 60%,
+        #3b82f6 80%,
+        #a855f7 100%
+      );
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .commune-spectrum-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 1024px) {
+      .viewer-inner {
+        grid-template-columns: 1fr;
+      }
+      .viewer-canvas-container {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .commune-container {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1295,6 +1886,13 @@
       <a href="#reserve" class="btn-nav">Reserve Now</a>
     </div>
   </nav>
+
+  <!-- Stock Ticker -->
+  <div class="stock-ticker">
+    <div class="ticker-track" id="ticker-track">
+      <!-- Populated by JS -->
+    </div>
+  </div>
 
   <section class="hero">
     <div class="hero-content">
@@ -1419,6 +2017,66 @@
         </div>
       </div>
       <p class="video-disclaimer">* Video contains no actual product footage. Runtime includes 47 seconds of ambient forest sounds and one long, knowing pause.</p>
+    </div>
+  </section>
+
+  <!-- 3D Product Viewer -->
+  <section class="viewer-section" id="product">
+    <div class="viewer-inner">
+      <div class="viewer-content">
+        <h2>Experience the Relic in Full Dimensional Glory</h2>
+        <p>Our proprietary WebGL renderer lets you examine every angle of your future regret. Drag to rotate. Scroll to zoom. Question your choices at any resolution.</p>
+        <div class="viewer-features">
+          <div class="viewer-feature">
+            <div class="viewer-feature-icon">◇</div>
+            <div class="viewer-feature-text">
+              <div class="viewer-feature-title">Museum-Grade Mesh</div>
+              <div class="viewer-feature-desc">2,847 polygons of pure narrative potential</div>
+            </div>
+          </div>
+          <div class="viewer-feature">
+            <div class="viewer-feature-icon">✧</div>
+            <div class="viewer-feature-text">
+              <div class="viewer-feature-title">Dynamic Particle System</div>
+              <div class="viewer-feature-desc">Each leaf rendered with existential weight</div>
+            </div>
+          </div>
+          <div class="viewer-feature">
+            <div class="viewer-feature-icon">◈</div>
+            <div class="viewer-feature-text">
+              <div class="viewer-feature-title">PBR Materials</div>
+              <div class="viewer-feature-desc">Physically-based rendering for spiritually-based products</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-canvas-container">
+        <canvas id="viewer-canvas"></canvas>
+        <div class="viewer-stats">
+          <div class="viewer-stat-row">
+            <span class="viewer-stat-label">Triangles</span>
+            <span class="viewer-stat-value" id="stat-triangles">2,847</span>
+          </div>
+          <div class="viewer-stat-row">
+            <span class="viewer-stat-label">Particles</span>
+            <span class="viewer-stat-value" id="stat-particles">0</span>
+          </div>
+          <div class="viewer-stat-row">
+            <span class="viewer-stat-label">FPS</span>
+            <span class="viewer-stat-value" id="stat-fps">60</span>
+          </div>
+          <div class="viewer-stat-row">
+            <span class="viewer-stat-label">Meaning/sec</span>
+            <span class="viewer-stat-value" id="stat-meaning">∞</span>
+          </div>
+        </div>
+        <div class="viewer-controls">
+          <button class="viewer-control-btn active" data-action="rotate" title="Auto-rotate">↻</button>
+          <button class="viewer-control-btn" data-action="particles" title="Toggle particles">✧</button>
+          <button class="viewer-control-btn" data-action="wireframe" title="Wireframe">▦</button>
+          <button class="viewer-control-btn" data-action="reset" title="Reset view">⌂</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1615,6 +2273,87 @@
     </div>
   </section>
 
+  <!-- Procedural Lore Generator -->
+  <section class="lore-section">
+    <div class="lore-header">
+      <h2>Generate Your Origin Story</h2>
+      <p>Each Terra Relic comes with unique, procedurally-generated lore. Preview your destiny.</p>
+    </div>
+    <div class="lore-generator">
+      <div class="lore-output" id="lore-output">
+        <span class="quote-mark open">"</span>
+        <span id="lore-text">Collected during the last warm afternoon before the frost returned with opinions. These leaves remember rain that no longer falls the same way.</span>
+        <span class="quote-mark close">"</span>
+      </div>
+      <div class="lore-meta">
+        <div class="lore-meta-item">
+          <span>Origin:</span>
+          <span class="lore-meta-value" id="lore-origin">Cascade Foothills</span>
+        </div>
+        <div class="lore-meta-item">
+          <span>Epoch:</span>
+          <span class="lore-meta-value" id="lore-epoch">Late Anthropocene</span>
+        </div>
+        <div class="lore-meta-item">
+          <span>Seed:</span>
+          <span class="lore-meta-value" id="lore-seed">#7FA2B9</span>
+        </div>
+      </div>
+      <button class="lore-generate-btn" id="lore-generate-btn">
+        Generate New Lore
+      </button>
+      <div class="lore-rarity" id="lore-rarity">
+        <span class="rarity-badge uncommon">Uncommon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Commune Canvas -->
+  <section class="commune-section">
+    <div class="commune-inner">
+      <div class="commune-header">
+        <h2>Commune With Your Future Relic</h2>
+        <p>Move your cursor to generate a unique energy signature. This pattern will be forever associated with your purchase.</p>
+      </div>
+      <div class="commune-container">
+        <div class="commune-canvas-wrapper">
+          <canvas id="commune-canvas"></canvas>
+          <div class="commune-overlay">
+            <div class="commune-overlay-text">Move cursor to begin communion</div>
+          </div>
+        </div>
+        <div class="commune-sidebar">
+          <div class="commune-card">
+            <div class="commune-card-title">Resonance Index</div>
+            <div class="commune-reading" id="commune-resonance">0.00</div>
+            <div class="commune-reading-label">Spiritual bandwidth detected</div>
+          </div>
+          <div class="commune-card">
+            <div class="commune-card-title">Energy Spectrum</div>
+            <div class="commune-spectrum"></div>
+            <div class="commune-spectrum-labels">
+              <span>Chaos</span>
+              <span>Harmony</span>
+            </div>
+          </div>
+          <div class="commune-card">
+            <div class="commune-card-title">Provenance Signature</div>
+            <div class="commune-signature" id="commune-signature">
+              Awaiting input...
+            </div>
+          </div>
+          <div class="commune-card">
+            <div class="commune-card-title">Actions</div>
+            <div class="commune-actions">
+              <button class="commune-btn secondary" id="commune-clear">Clear</button>
+              <button class="commune-btn primary" id="commune-save">Save PNG</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="calculator-section" id="science">
     <div class="calculator-inner">
       <div class="calculator-header">
@@ -1700,6 +2439,616 @@
   </footer>
 
   <script>
+    // ═══════════════════════════════════════════════════════════════════════════
+    // STOCK TICKER - Real-time Narrative Markets
+    // ═══════════════════════════════════════════════════════════════════════════
+    const tickerData = [
+      { symbol: '$SOUL', name: 'Soul Index', value: 847.32, change: 2.34 },
+      { symbol: '$VIBE', name: 'Vibe Futures', value: 1203.87, change: -0.82 },
+      { symbol: '$LORE', name: 'Lore Token', value: 56.91, change: 5.67 },
+      { symbol: '$DIRT', name: 'Terra Materials', value: 420.69, change: 0.42 },
+      { symbol: 'MDI', name: 'Meaning Density Index', value: 9847.23, change: 1.23 },
+      { symbol: '$LEAF', name: 'Leaf Cap', value: 33.33, change: -2.11 },
+      { symbol: 'NVL', name: 'Narrative Value Lock', value: 4.2, change: 8.47, suffix: 'M' },
+      { symbol: '$COPE', name: 'Copium Reserve', value: 999.99, change: 0.01 },
+    ];
+
+    const tickerAlerts = [
+      '⚠ SENTIMENT CORRECTION INCOMING',
+      '◊ HARVEST 001 DROPS IN 14D',
+      '✧ MEANING SURGE DETECTED',
+      '⬡ VIBE SHIFT IMMINENT',
+    ];
+
+    function createTickerContent() {
+      const track = document.getElementById('ticker-track');
+      let html = '';
+
+      // Create content twice for seamless loop
+      for (let i = 0; i < 2; i++) {
+        tickerData.forEach((item, index) => {
+          const changeClass = item.change >= 0 ? 'up' : 'down';
+          const changeSymbol = item.change >= 0 ? '+' : '';
+          const suffix = item.suffix || '';
+          html += `
+            <div class="ticker-item">
+              <span class="ticker-symbol">${item.symbol}</span>
+              <span class="ticker-value">${item.value.toFixed(2)}${suffix}</span>
+              <span class="ticker-change ${changeClass}">${changeSymbol}${item.change.toFixed(2)}%</span>
+            </div>
+          `;
+          if (index === 3) {
+            html += `<div class="ticker-item"><span class="ticker-alert">${tickerAlerts[i % tickerAlerts.length]}</span></div>`;
+          }
+        });
+      }
+      track.innerHTML = html;
+    }
+
+    function updateTickerValues() {
+      tickerData.forEach(item => {
+        // Random walk
+        const volatility = Math.random() * 0.5 - 0.25;
+        item.change += volatility;
+        item.change = Math.max(-15, Math.min(15, item.change));
+        item.value *= (1 + (Math.random() * 0.002 - 0.001));
+      });
+    }
+
+    createTickerContent();
+    setInterval(() => {
+      updateTickerValues();
+      createTickerContent();
+    }, 3000);
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // THREE.JS 3D PRODUCT VIEWER
+    // ═══════════════════════════════════════════════════════════════════════════
+    const viewerCanvas = document.getElementById('viewer-canvas');
+
+    if (viewerCanvas && typeof THREE !== 'undefined') {
+      // Scene setup
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: viewerCanvas, antialias: true, alpha: true });
+
+      function resizeViewer() {
+        const container = viewerCanvas.parentElement;
+        const size = Math.min(container.clientWidth, container.clientHeight);
+        renderer.setSize(size, size);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }
+      resizeViewer();
+      window.addEventListener('resize', resizeViewer);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
+
+      const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      mainLight.position.set(5, 5, 5);
+      scene.add(mainLight);
+
+      const goldLight = new THREE.PointLight(0xd4a853, 0.6, 10);
+      goldLight.position.set(-3, 2, 3);
+      scene.add(goldLight);
+
+      const greenLight = new THREE.PointLight(0x34d399, 0.4, 10);
+      greenLight.position.set(3, -2, 2);
+      scene.add(greenLight);
+
+      // Create the "bag" - a stylized pouch shape
+      const bagGroup = new THREE.Group();
+
+      // Main bag body - rounded box
+      const bagGeometry = new THREE.BoxGeometry(1.5, 2, 0.8, 8, 8, 8);
+      // Deform vertices for organic look
+      const positions = bagGeometry.attributes.position;
+      for (let i = 0; i < positions.count; i++) {
+        const x = positions.getX(i);
+        const y = positions.getY(i);
+        const z = positions.getZ(i);
+        // Add subtle bulge
+        const bulge = Math.sin(y * Math.PI) * 0.1;
+        positions.setZ(i, z + bulge);
+        // Pinch top
+        if (y > 0.7) {
+          const pinch = (y - 0.7) * 0.5;
+          positions.setX(i, x * (1 - pinch));
+          positions.setZ(i, z * (1 - pinch * 0.5));
+        }
+      }
+      bagGeometry.computeVertexNormals();
+
+      const bagMaterial = new THREE.MeshStandardMaterial({
+        color: 0x3f2a1d,
+        roughness: 0.8,
+        metalness: 0.1,
+      });
+
+      const bag = new THREE.Mesh(bagGeometry, bagMaterial);
+      bagGroup.add(bag);
+
+      // Seal/tie at top
+      const sealGeometry = new THREE.TorusGeometry(0.25, 0.05, 8, 16);
+      const sealMaterial = new THREE.MeshStandardMaterial({
+        color: 0xd4a853,
+        roughness: 0.3,
+        metalness: 0.7,
+      });
+      const seal = new THREE.Mesh(sealGeometry, sealMaterial);
+      seal.position.y = 0.9;
+      seal.rotation.x = Math.PI / 2;
+      bagGroup.add(seal);
+
+      // Tag
+      const tagGeometry = new THREE.PlaneGeometry(0.4, 0.3);
+      const tagMaterial = new THREE.MeshStandardMaterial({
+        color: 0xf5f3ef,
+        roughness: 0.9,
+        side: THREE.DoubleSide,
+      });
+      const tag = new THREE.Mesh(tagGeometry, tagMaterial);
+      tag.position.set(0.4, 0.7, 0.1);
+      tag.rotation.z = -0.3;
+      bagGroup.add(tag);
+
+      // String connecting tag
+      const stringCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0.9, 0.15),
+        new THREE.Vector3(0.2, 0.85, 0.15),
+        new THREE.Vector3(0.35, 0.75, 0.12),
+      ]);
+      const stringGeometry = new THREE.TubeGeometry(stringCurve, 20, 0.01, 8, false);
+      const stringMaterial = new THREE.MeshStandardMaterial({ color: 0x8b7355 });
+      const string = new THREE.Mesh(stringGeometry, stringMaterial);
+      bagGroup.add(string);
+
+      scene.add(bagGroup);
+
+      // Particle system (leaves)
+      const particleCount = 50;
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particlePositions = new Float32Array(particleCount * 3);
+      const particleSizes = new Float32Array(particleCount);
+      const particleAngles = new Float32Array(particleCount);
+
+      for (let i = 0; i < particleCount; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const radius = 1.5 + Math.random() * 1.5;
+        particlePositions[i * 3] = Math.cos(theta) * radius;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 3;
+        particlePositions[i * 3 + 2] = Math.sin(theta) * radius;
+        particleSizes[i] = 0.05 + Math.random() * 0.1;
+        particleAngles[i] = Math.random() * Math.PI * 2;
+      }
+
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      particlesGeometry.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
+
+      const particlesMaterial = new THREE.PointsMaterial({
+        color: 0x34d399,
+        size: 0.08,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending,
+      });
+
+      const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+      particles.visible = true;
+      scene.add(particles);
+
+      camera.position.z = 5;
+
+      // Controls state
+      let autoRotate = true;
+      let showParticles = true;
+      let wireframe = false;
+      let isDragging = false;
+      let previousMousePosition = { x: 0, y: 0 };
+      let targetRotation = { x: 0, y: 0 };
+
+      // Mouse controls
+      viewerCanvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      viewerCanvas.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          const deltaX = e.clientX - previousMousePosition.x;
+          const deltaY = e.clientY - previousMousePosition.y;
+          targetRotation.y += deltaX * 0.01;
+          targetRotation.x += deltaY * 0.01;
+          previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+      });
+
+      viewerCanvas.addEventListener('mouseup', () => isDragging = false);
+      viewerCanvas.addEventListener('mouseleave', () => isDragging = false);
+
+      // Control buttons
+      document.querySelectorAll('.viewer-control-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.dataset.action;
+          if (action === 'rotate') {
+            autoRotate = !autoRotate;
+            btn.classList.toggle('active', autoRotate);
+          } else if (action === 'particles') {
+            showParticles = !showParticles;
+            particles.visible = showParticles;
+            btn.classList.toggle('active', showParticles);
+          } else if (action === 'wireframe') {
+            wireframe = !wireframe;
+            bagMaterial.wireframe = wireframe;
+            btn.classList.toggle('active', wireframe);
+          } else if (action === 'reset') {
+            targetRotation = { x: 0, y: 0 };
+            bagGroup.rotation.set(0, 0, 0);
+          }
+        });
+      });
+
+      // Stats
+      const statParticles = document.getElementById('stat-particles');
+      const statFps = document.getElementById('stat-fps');
+      let lastTime = performance.now();
+      let frameCount = 0;
+
+      // Animation loop
+      function animateViewer() {
+        requestAnimationFrame(animateViewer);
+
+        // FPS counter
+        frameCount++;
+        const now = performance.now();
+        if (now - lastTime >= 1000) {
+          statFps.textContent = frameCount;
+          frameCount = 0;
+          lastTime = now;
+        }
+
+        // Auto rotation
+        if (autoRotate && !isDragging) {
+          bagGroup.rotation.y += 0.005;
+        }
+
+        // Apply manual rotation
+        bagGroup.rotation.x += (targetRotation.x - bagGroup.rotation.x) * 0.1;
+        if (!autoRotate) {
+          bagGroup.rotation.y += (targetRotation.y - bagGroup.rotation.y) * 0.1;
+        }
+
+        // Animate particles
+        if (showParticles) {
+          const positions = particles.geometry.attributes.position.array;
+          for (let i = 0; i < particleCount; i++) {
+            particleAngles[i] += 0.01;
+            const radius = 1.5 + Math.sin(particleAngles[i] * 0.5) * 0.5;
+            positions[i * 3] = Math.cos(particleAngles[i]) * radius;
+            positions[i * 3 + 1] += Math.sin(now * 0.001 + i) * 0.002;
+            positions[i * 3 + 2] = Math.sin(particleAngles[i]) * radius;
+
+            // Wrap around
+            if (positions[i * 3 + 1] > 2) positions[i * 3 + 1] = -2;
+            if (positions[i * 3 + 1] < -2) positions[i * 3 + 1] = 2;
+          }
+          particles.geometry.attributes.position.needsUpdate = true;
+          statParticles.textContent = particleCount;
+        } else {
+          statParticles.textContent = '0';
+        }
+
+        // Float the bag
+        bagGroup.position.y = Math.sin(now * 0.001) * 0.1;
+
+        renderer.render(scene, camera);
+      }
+
+      animateViewer();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // PROCEDURAL LORE GENERATOR
+    // ═══════════════════════════════════════════════════════════════════════════
+    const loreTemplates = {
+      openings: [
+        "Collected during {event}, these {materials} {memory}.",
+        "Gathered at the precise moment when {phenomenon}, this relic {quality}.",
+        "From the {location} where {event}, these fragments {action}.",
+        "Sealed during {timeframe}, when {phenomenon}, this vessel {quality}.",
+        "Harvested beneath {celestial}, these {materials} {memory}.",
+      ],
+      events: [
+        "the last warm afternoon before the frost returned with opinions",
+        "a solar eclipse visible only to those who weren't looking",
+        "the brief window when Wi-Fi signals aligned with ley lines",
+        "the mass meditation event of 2019",
+        "the exact moment a child asked 'why' for the millionth time",
+        "the final afternoon of analog time",
+        "a thunderstorm that apologized afterward",
+        "the great pause between intentions",
+        "the hour when all clocks disagreed",
+      ],
+      phenomena: [
+        "the algorithm briefly achieved empathy",
+        "the forest exhaled its last unmonetized breath",
+        "silence became briefly audible",
+        "the wind changed its mind mid-sentence",
+        "nostalgia crystalized into matter",
+        "meaning briefly exceeded supply",
+        "the simulation refreshed its cache",
+        "attention became a finite resource",
+      ],
+      materials: [
+        "leaves", "fragments", "specimens", "particles", "elements",
+        "whispers", "remnants", "echoes", "traces", "memories",
+      ],
+      memory: [
+        "remember rain that no longer falls the same way",
+        "still hold warmth from a sun that has since grown cynical",
+        "carry the weight of unspoken conversations",
+        "contain frequencies only felt, never heard",
+        "preserve the exact texture of anticipation",
+        "know things that search engines have forgotten",
+        "witnessed seventeen different kinds of silence",
+      ],
+      quality: [
+        "holds space for questions that refuse answers",
+        "exists in the liminal zone between artifact and accident",
+        "resonates at the frequency of almost-understanding",
+        "embodies the principle of meaningful ambiguity",
+        "serves as proof that something happened here",
+        "contains multitudes, mostly confused",
+      ],
+      location: [
+        "Cascade Foothills", "Northern Stillness", "Edge of Modernity",
+        "Unnamed Meridian", "Last Forest", "Forgotten Watershed",
+        "Silicon Valleys (the original ones)", "Pre-Cloud Mountains",
+      ],
+      timeframe: [
+        "Late Anthropocene", "Post-Attention Era", "Age of Uncertainty",
+        "The Great Overwhelm", "Peak Irony Period", "Terminal Nostalgia",
+      ],
+      celestial: [
+        "a moon that remembered its purpose",
+        "stars arranging themselves alphabetically",
+        "clouds spelling temporary truths",
+        "a sky still processing its feelings",
+      ],
+      action: [
+        "continue to resonate with the original moment",
+        "hold the exact weight of that afternoon",
+        "persist despite all reasonable expectations",
+        "refuse to be fully explained",
+      ],
+    };
+
+    const rarities = [
+      { name: 'Common', class: 'common', weight: 40 },
+      { name: 'Uncommon', class: 'uncommon', weight: 30 },
+      { name: 'Rare', class: 'rare', weight: 18 },
+      { name: 'Legendary', class: 'legendary', weight: 10 },
+      { name: 'Mythic', class: 'mythic', weight: 2 },
+    ];
+
+    function pickRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function pickRarity() {
+      const total = rarities.reduce((sum, r) => sum + r.weight, 0);
+      let random = Math.random() * total;
+      for (const rarity of rarities) {
+        random -= rarity.weight;
+        if (random <= 0) return rarity;
+      }
+      return rarities[0];
+    }
+
+    function generateLore() {
+      const template = pickRandom(loreTemplates.openings);
+      const lore = template
+        .replace('{event}', pickRandom(loreTemplates.events))
+        .replace('{phenomenon}', pickRandom(loreTemplates.phenomena))
+        .replace('{materials}', pickRandom(loreTemplates.materials))
+        .replace('{memory}', pickRandom(loreTemplates.memory))
+        .replace('{quality}', pickRandom(loreTemplates.quality))
+        .replace('{location}', pickRandom(loreTemplates.location))
+        .replace('{timeframe}', pickRandom(loreTemplates.timeframe))
+        .replace('{celestial}', pickRandom(loreTemplates.celestial))
+        .replace('{action}', pickRandom(loreTemplates.action));
+
+      return {
+        text: lore,
+        origin: pickRandom(loreTemplates.location),
+        epoch: pickRandom(loreTemplates.timeframe),
+        seed: '#' + Math.random().toString(16).substr(2, 6).toUpperCase(),
+        rarity: pickRarity(),
+      };
+    }
+
+    const loreTextEl = document.getElementById('lore-text');
+    const loreOriginEl = document.getElementById('lore-origin');
+    const loreEpochEl = document.getElementById('lore-epoch');
+    const loreSeedEl = document.getElementById('lore-seed');
+    const loreRarityEl = document.getElementById('lore-rarity');
+    const loreGenerateBtn = document.getElementById('lore-generate-btn');
+
+    loreGenerateBtn.addEventListener('click', () => {
+      loreGenerateBtn.classList.add('generating');
+      loreGenerateBtn.textContent = 'Channeling...';
+
+      setTimeout(() => {
+        const lore = generateLore();
+        loreTextEl.textContent = lore.text;
+        loreOriginEl.textContent = lore.origin;
+        loreEpochEl.textContent = lore.epoch;
+        loreSeedEl.textContent = lore.seed;
+        loreRarityEl.innerHTML = `<span class="rarity-badge ${lore.rarity.class}">${lore.rarity.name}</span>`;
+
+        loreGenerateBtn.classList.remove('generating');
+        loreGenerateBtn.textContent = 'Generate New Lore';
+      }, 800 + Math.random() * 400);
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // COMMUNE CANVAS - Generative Art
+    // ═══════════════════════════════════════════════════════════════════════════
+    const communeCanvas = document.getElementById('commune-canvas');
+    const communeCtx = communeCanvas.getContext('2d');
+    const communeResonance = document.getElementById('commune-resonance');
+    const communeSignature = document.getElementById('commune-signature');
+    const communeClear = document.getElementById('commune-clear');
+    const communeSave = document.getElementById('commune-save');
+
+    let communePoints = [];
+    let resonanceValue = 0;
+    let signatureHash = '';
+
+    function resizeCommune() {
+      const wrapper = communeCanvas.parentElement;
+      communeCanvas.width = wrapper.clientWidth;
+      communeCanvas.height = wrapper.clientHeight;
+      redrawCommune();
+    }
+
+    function hashPoints(points) {
+      let hash = 0;
+      const str = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('');
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
+    }
+
+    function redrawCommune() {
+      const w = communeCanvas.width;
+      const h = communeCanvas.height;
+
+      // Clear with dark background
+      communeCtx.fillStyle = '#0a0a0b';
+      communeCtx.fillRect(0, 0, w, h);
+
+      if (communePoints.length < 2) return;
+
+      // Create flowing lines with gradients
+      communeCtx.lineCap = 'round';
+      communeCtx.lineJoin = 'round';
+
+      // Draw multiple layers
+      for (let layer = 0; layer < 3; layer++) {
+        communeCtx.beginPath();
+
+        const offset = layer * 3;
+        const alpha = 0.3 - layer * 0.08;
+
+        for (let i = 0; i < communePoints.length; i++) {
+          const p = communePoints[i];
+          const hue = (p.x / w * 60 + p.y / h * 60 + layer * 30) % 360;
+
+          if (i === 0) {
+            communeCtx.moveTo(p.x + offset, p.y + offset);
+          } else {
+            const prev = communePoints[i - 1];
+            const cpX = (prev.x + p.x) / 2 + offset;
+            const cpY = (prev.y + p.y) / 2 + offset;
+            communeCtx.quadraticCurveTo(prev.x + offset, prev.y + offset, cpX, cpY);
+          }
+        }
+
+        const gradient = communeCtx.createLinearGradient(0, 0, w, h);
+        gradient.addColorStop(0, `hsla(38, 70%, 58%, ${alpha})`);
+        gradient.addColorStop(0.5, `hsla(160, 60%, 50%, ${alpha})`);
+        gradient.addColorStop(1, `hsla(280, 60%, 60%, ${alpha})`);
+
+        communeCtx.strokeStyle = gradient;
+        communeCtx.lineWidth = 3 - layer;
+        communeCtx.stroke();
+      }
+
+      // Draw glow points at intervals
+      for (let i = 0; i < communePoints.length; i += 10) {
+        const p = communePoints[i];
+        const gradient = communeCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 15);
+        gradient.addColorStop(0, 'rgba(212, 168, 83, 0.4)');
+        gradient.addColorStop(1, 'rgba(212, 168, 83, 0)');
+
+        communeCtx.fillStyle = gradient;
+        communeCtx.beginPath();
+        communeCtx.arc(p.x, p.y, 15, 0, Math.PI * 2);
+        communeCtx.fill();
+      }
+    }
+
+    function updateCommuneStats() {
+      // Calculate "resonance" based on movement patterns
+      if (communePoints.length > 1) {
+        let totalDistance = 0;
+        let totalAngleChange = 0;
+
+        for (let i = 1; i < communePoints.length; i++) {
+          const dx = communePoints[i].x - communePoints[i-1].x;
+          const dy = communePoints[i].y - communePoints[i-1].y;
+          totalDistance += Math.sqrt(dx*dx + dy*dy);
+
+          if (i > 1) {
+            const prevDx = communePoints[i-1].x - communePoints[i-2].x;
+            const prevDy = communePoints[i-1].y - communePoints[i-2].y;
+            const angle1 = Math.atan2(dy, dx);
+            const angle2 = Math.atan2(prevDy, prevDx);
+            totalAngleChange += Math.abs(angle1 - angle2);
+          }
+        }
+
+        resonanceValue = Math.min(99.99, (totalDistance * 0.01 + totalAngleChange * 5));
+        communeResonance.textContent = resonanceValue.toFixed(2);
+
+        signatureHash = hashPoints(communePoints);
+        communeSignature.textContent = `0x${signatureHash}...${hashPoints(communePoints.slice(-20))}`;
+      }
+    }
+
+    communeCanvas.addEventListener('mousemove', (e) => {
+      const rect = communeCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      communePoints.push({ x, y, time: Date.now() });
+
+      // Limit points for performance
+      if (communePoints.length > 1000) {
+        communePoints = communePoints.slice(-800);
+      }
+
+      redrawCommune();
+      updateCommuneStats();
+    });
+
+    communeClear.addEventListener('click', () => {
+      communePoints = [];
+      resonanceValue = 0;
+      communeResonance.textContent = '0.00';
+      communeSignature.textContent = 'Awaiting input...';
+      redrawCommune();
+    });
+
+    communeSave.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = `terra-relic-signature-${signatureHash || 'blank'}.png`;
+      link.href = communeCanvas.toDataURL();
+      link.click();
+    });
+
+    resizeCommune();
+    window.addEventListener('resize', resizeCommune);
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ORIGINAL FUNCTIONALITY (preserved)
+    // ═══════════════════════════════════════════════════════════════════════════
+
     // Countdown Timer
     function updateCountdown() {
       const dropDate = new Date();
@@ -1782,7 +3131,6 @@
     // Parallax effect on scroll
     window.addEventListener('scroll', () => {
       const scrolled = window.pageYOffset;
-      const gradientBg = document.querySelector('.gradient-bg::before');
       document.querySelector('.gradient-bg').style.transform = `translateY(${scrolled * 0.3}px)`;
     });
   </script>
